@@ -30,7 +30,7 @@ class Board:
             for y in range(8):
                 new_y = y * file_size
                 color = colors[(x + y) % 2]
-                squares[y + 8 * x] = Square((7 - x + offset, new_y + offset), color, file_size)
+                squares[y + 8 * x] = Square((7 - x + offset, new_y + offset), color, file_size, None)
         return squares
 
     def __make_starting_pieces(self, fen_string, squares, pc1, pc2):
@@ -69,3 +69,12 @@ class Board:
                 print(f"")
 
         return pieces
+
+    def flip_board(self):
+        file_size = 3
+        for square in self.squares:
+            x, y = square.pos
+            square.pos = 7 + self.offset - x, 7 + self.offset - y*3
+
+        self.print_squares()
+        self.print_pieces()

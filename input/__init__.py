@@ -1,0 +1,1 @@
+from input.input import get_move

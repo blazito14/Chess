@@ -2,6 +2,7 @@ import sys
 from utils.utils import *
 from colorama import Cursor
 from board.board import Board
+from input import get_move
 
 if __name__ == '__main__':
     global debug
@@ -26,7 +27,15 @@ if __name__ == '__main__':
         board.print_pieces()
         clear_current_line()
         input('ENTER to move piece')
-        # board.pieces[21].move_piece(board.squares[8*4+5])
-        clear_current_line()
-        input('ENTER to leave')
-        exit_buffer()
+        clear_line_above()
+        while True:
+            starting_square, ending_square = get_move()
+            if starting_square == 65 or ending_square == 65:
+                board.flip_board()
+                continue
+            piece = board.squares[starting_square].piece
+            if piece == None:
+                print(f"no piece - ", end='')
+                continue
+            piece.move_piece(board.squares[ending_square])
+

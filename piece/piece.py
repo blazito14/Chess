@@ -11,12 +11,14 @@ class Piece:
         self.square = square
 
     def print_piece(self):
-        self.square.print_piece(self.icon, self.color)
+        self.square.print_piece()
 
     def move_piece(self, square):
         self.square.print_square()
+        self.square.piece = None
         self.square = square
-        self.square.print_piece(self.icon, self.color)
+        self.square.piece = self
+        self.square.print_piece()
 
     def __get_icon_from_char(self, char: str) -> str:
         icons = {'p': '\u265F',

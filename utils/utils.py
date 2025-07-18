@@ -15,4 +15,10 @@ def exit_buffer():
 
 
 def clear_current_line():
-    print('\033[2K', end='')  # Clear entire line from current position
+    print('\033[2K\r', end='')  # Clear entire line from current position
+
+def clear_line_above():
+    print('\033[A\33[2K\r',end='')
+
+def move_cursor_up():
+    print('\033[A')
