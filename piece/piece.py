@@ -1,5 +1,4 @@
 from square.square import Square
-from termcolor import colored
 import numpy as np
 from numpy.typing import NDArray
 
@@ -30,14 +29,14 @@ class Piece:
         return icons[char]
 
     def __get_code_from_char(self, char: str) -> NDArray(shape=(), dtype=np.uint8):
-        no_piece = 0;
-        king = 1;
-        pawn = 2;
-        knight = 3;
+        no_piece = 0
+        king = 1
+        pawn = 2
+        knight = 3
         bishop = 4
-        rook = 5;
-        queen = 6;
-        white = 8;
+        rook = 5
+        queen = 6
+        white = 8
         black = 16
 
         piece_codes = {'k': king, 'p': pawn, 'n': knight, 'b': bishop,

@@ -1,6 +1,7 @@
 import numpy as np
 from piece.piece import Piece
 from square.square import Square
+from colorama import Cursor
 
 class Board:
     def __init__(self, bc1, bc2, pc1, pc2, fen_string, debug):
@@ -10,13 +11,19 @@ class Board:
         self.pc2 = pc2
         self.debug = debug
         self.offset = 1
-        self.squares = self.__make_squares(bc1, bc2, 1)
+        self.squares = self.__make_squares(bc1, bc2, self.offset)
         # self.rankPos, self.filePos = make_position_dict(self.squares)
         self.pieces = self.__make_starting_pieces(fen_string, self.squares, pc1, pc2)
 
     def print_squares(self):
         for square in self.squares:
             square.print_square()
+        for rank in range(0, 8):
+            print(Cursor.POS(2, (7 - rank) + 2) + str(rank + 1), end='')
+        for file in range(0, 8):
+            files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+            print(Cursor.POS(5 + file * 3, 10) + files[file], end='')
+        print(Cursor.POS(1, 12) + '', end='')
 
     def print_pieces(self):
         for piece in self.pieces:
@@ -28,9 +35,9 @@ class Board:
         colors = [color1, color2]
         for x in range(8):
             for y in range(8):
-                new_y = y * file_size
+                new_y = (y + offset) * file_size
                 color = colors[(x + y) % 2]
-                squares[y + 8 * x] = Square((7 - x + offset, new_y + offset), color, file_size, None)
+                squares[y + 8 * x] = Square((7 - x + offset + 1, new_y + 1), color, file_size, None)
         return squares
 
     def __make_starting_pieces(self, fen_string, squares, pc1, pc2):
@@ -73,8 +80,15 @@ class Board:
     def flip_board(self):
         file_size = 3
         for square in self.squares:
-            x, y = square.pos
-            square.pos = 7 + self.offset - x, 7 + self.offset - y*3
+            row, column = square.pos
+            square.pos = (7 - (row - self.offset - 1)) + self.offset + 1, ((7 - ((column - 1)//file_size - self.offset)) + self.offset)*file_size + 1
+        for rank in range(0, 8):
+            print(Cursor.POS(2, (7 - rank) + 2) + '', end='')
+            print(Cursor.POS(2 + 8*3, (7 - rank) + 2) + '', end='')
+        for file in range(0, 8):
+            files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+            print(Cursor.POS(5 + file * 3, 10) + '', end='')
+        print(Cursor.POS(1, 12) + '', end='')
 
         self.print_squares()
         self.print_pieces()
